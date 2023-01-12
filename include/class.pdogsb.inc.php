@@ -82,12 +82,19 @@ class PdoGsb{
 	public function getFiches(){
 		$req = "select idFiche as id, nom as nom, prenom as prenom, mois as mois, 
 		nbJustificatifs as nbJustificatifs, montantValide as montant, dateModif as dateModif, 
-		libelle as etat from FicheFrais as F INNER JOIN Visiteur as V ON F.idVisiteur = V.id INNER JOIN Etat as E ON F.idEtat = E.id";
+		libelle as etat from FicheFrais as F INNER JOIN Visiteur as V ON F.idVisiteur = V.id 
+		INNER JOIN Etat as E ON F.idEtat = E.id order by nom";
 		$rs = PdoGsb::$monPdo->query($req);
 		$ligne = $rs->fetchAll();
 		return $ligne;
 	}
 
+	public function getEtat(){
+		$req = "select libelle as libelle, id as id from Etat";
+		$rs = PdoGsb::$monPdo->query($req);
+		$ligne = $rs->fetchAll();
+		return $ligne;
+	}
 
 	public function changeEtat($idFiche, $etat){
 		$req = "update FicheFrais set idEtat = '$etat' 
